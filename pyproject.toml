@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling", "asyncio", "aiohttp", "logging"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bitrixogram"
+version = "1.0.3"
+authors = [
+  { name="Aleksey Rublev", email="lexx@rcbd.org" },
+]
+description = "A simple async framework for creating Bitrix24 chat bots in 'aiogram'-like style over Bitrix24 REST API"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/lxxr/bitrixogram"
+Issues = "https://github.com/lxxr/bitrixogram/issues"
