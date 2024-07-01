@@ -1,5 +1,5 @@
 # bitrixogram
-A simple async framework for creating Bitrix24 chat bots in 'aiogram'-like style over Bitrix24 REST API  
+A simple async framework for creating bitrix chat bot in 'aiogram'-like style over Bitrix24 REST API  
 
 Supports Bitrix REST API and webhooks, requires JSON format support from the service  
 Should work on Python 3.x  
