@@ -7,10 +7,22 @@ Should work on Python 3.x
 ## Documentation
 Available on https://github.com/lxxr/bitrixogram
 
+##Bitrix24 chatbot api documentation
+https://dev.1c-bitrix.ru/learning/course/index.php?COURSE_ID=93&INDEX=Y
+
+https://dev.1c-bitrix.ru/rest_help/index.php
+
 ## Dependencies
 - aiohttp
 - asyncio
 - logging
+
+## Install 
+pip install bitrixogram
+
+or 
+
+tar.gz and whl - https://pypi.org/project/bitrixogram/
 
 ## Example:
 
