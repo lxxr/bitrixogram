@@ -8,20 +8,68 @@ Created on Sun May 19 13:22:13 2024
 from typing import List, Dict, Any
 
 class ReplyKeyboardMarkup:
+    """
+    Класс ReplyKeyboardMarkup представляет собой клавиатуру ответа в формате Telegram.
+
+    Args:
+    - keyboard: List[List[Dict[str, Any]]] - двумерный список кнопок клавиатуры.
+    - resize_keyboard: bool - флаг, указывающий на возможность изменения размера клавиатуры.
+    """
+
     def __init__(self, keyboard: List[List[Dict[str, Any]]], resize_keyboard: bool = True):
+        """
+        Инициализирует новый экземпляр класса ReplyKeyboardMarkup с указанным списком кнопок и настройками размера.
+
+        Args:
+        - keyboard: List[List[Dict[str, Any]]] - двумерный список кнопок клавиатуры.
+        - resize_keyboard: bool - флаг, указывающий на возможность изменения размера клавиатуры (по умолчанию True).
+        """
         self.keyboard = keyboard
         self.resize_keyboard = resize_keyboard
 
     def to_dict(self) -> Dict[str, Any]:
+        """
+        Преобразует клавиатуру в формат словаря.
+
+        Возвращает:
+        - Словарь, представляющий клавиатуру.
+        """
         return self.keyboard
 
 
 class ReplyKeyboardBuilder:
+    """
+    Класс ReplyKeyboardBuilder предоставляет удобный интерфейс для построения клавиатуры ответа.
+
+    Args:
+    - buttons: List[Dict[str, Any]] - список кнопок клавиатуры.
+    - current_line: List[Dict[str, Any]] - текущая строка кнопок клавиатуры.
+    """
+
     def __init__(self):
+        """
+        Инициализирует новый экземпляр класса ReplyKeyboardBuilder.
+        """
         self.buttons = []
         self.current_line = []
 
-    def button(self, text: str, command: str = None, command_params: Any = None,block:str = "Y", link: str = None,width:int = 200, bg_color: str = "#29619b", text_color: str = "#fff", display: str = "LINE", disabled="N") -> 'ReplyKeyboardBuilder':
+    def button(self, text: str, command: str = None, command_params: Any = None, block: str = "Y", link: str = None, width: int = 200, bg_color: str = "#29619b", text_color: str = "#fff", display: str = "LINE", disabled: str = "N") -> 'ReplyKeyboardBuilder':
+        """
+        Добавляет кнопку в текущую строку клавиатуры.
+
+        Args:
+        - text: str - текст кнопки.
+        - command: str - команда для кнопки (опционально).
+        - command_params: Any - параметры команды (опционально).
+        - block: str - флаг блокировки кнопки (по умолчанию "Y").
+        - link: str - ссылка для кнопки (опционально).
+        - width: int - ширина кнопки (по умолчанию 200).
+        - bg_color: str - цвет фона кнопки (по умолчанию "#29619b").
+        - text_color: str - цвет текста кнопки (по умолчанию "#fff").
+        - display: str - тип отображения кнопки (по умолчанию "LINE").
+        - disabled: str - флаг отключения кнопки (по умолчанию "N").
+
+        """
         button = {"TEXT": text}
         if command:
             button["COMMAND"] = command
@@ -46,6 +94,10 @@ class ReplyKeyboardBuilder:
         return self
 
     def newline(self) -> 'ReplyKeyboardBuilder':
+        """
+        Завершает текущую строку кнопок и переходит на новую строку.
+
+        """
         if self.current_line:
             self.buttons.extend(self.current_line)
             self.current_line = [{"TYPE": "NEWLINE"}]
@@ -54,6 +106,13 @@ class ReplyKeyboardBuilder:
         return self
 
     def adjust(self, buttons_per_line: int) -> 'ReplyKeyboardBuilder':
+        """
+        Приводит клавиатуру к заданному числу кнопок в строке.
+
+        Args:
+        - buttons_per_line: int - количество кнопок в строке.
+
+        """
         if self.current_line:
             self.buttons.extend(self.current_line)
             self.current_line = []
@@ -76,7 +135,15 @@ class ReplyKeyboardBuilder:
         return self
 
     def as_markup(self, resize_keyboard: bool = True) -> ReplyKeyboardMarkup:
+        """
+        Возвращает объект ReplyKeyboardMarkup, представляющий построенную клавиатуру.
+
+        Args:
+        - resize_keyboard: bool - флаг изменения размера клавиатуры (по умолчанию True).
+
+        Возвращает:
+        - Объект ReplyKeyboardMarkup с построенной клавиатурой.
+        """
         if self.current_line:
             self.buttons.append(self.current_line)
         return ReplyKeyboardMarkup(keyboard=self.buttons, resize_keyboard=resize_keyboard)
-

@@ -12,13 +12,6 @@ Available on https://github.com/lxxr/bitrixogram
 - asyncio
 - logging
 
-## Install 
-pip install bitrixogram
-
-or 
-
-tar.gz and whl - https://pypi.org/project/bitrixogram/
-
 ## Example:
 
 ### Project sample structure
@@ -78,22 +71,53 @@ if __name__ == "__main__":
 ### Handler example
 
 ```python
-from bitrixogram.core import Router,FSMContext,MagicFilter,Message,Command
+from bitrixogram.core import Router,FSMContext,MagicFilter,Message,Command,State,StatesGroup
 from bitrixogram.attach import ReplyAttachMarkup, ReplyAttachBuilder, GridLayout
 from keyboards.main_keyboard import get_main_kb
 
 F = MagicFilter()
 router = Router()
 
+
+class TestState(StatesGroup):
+    test1_state = State()
+    test2_state = State()
+
 def any_router(bx):
+    @router.message(TestState.test1_state,((F.text()=="test2") | (F.text()=="test3")))
+    async def handle_message_add_event_test_state1(message: Message, fsm: FSMContext):        
+        chat_id = message.get_chat_id()
+        state= await fsm.get_state()
+        print(f"get state test1: {state}")
+        await bx.send_message(
+            chat_id=chat_id,
+            text="any router test - state1"
+        )
+        await fsm.set_state(TestState.test2_state)
+        
+    @router.message(TestState.test2_state,(F.text()))        
+    async def handle_message_add_event_test_state2(message: Message, fsm: FSMContext):        
+        chat_id = message.get_chat_id()
+        state= await fsm.get_state()
+        print(f"get state test2: {state}")
+        await bx.send_message(
+            chat_id=chat_id,
+            text="any router test - state2"
+        )        
+        await fsm.clear_state()
+        
     @router.message(F.text()=="test")
     async def handle_message_add_event_test(message: Message, fsm: FSMContext):        
         chat_id = message.get_chat_id()
+        await fsm.set_state(TestState.test1_state)
+        state= await fsm.get_state()
+        print(f"set state: {state}")
         await bx.send_message(
             chat_id=chat_id,
-            text="test handler in any router"
+            text="any router test"
+        
         )
-
+        
     @router.message(F.text())
     async def handle_message_add_event_other_text(message: Message, fsm: FSMContext):        
         chat_id = message.get_chat_id()
