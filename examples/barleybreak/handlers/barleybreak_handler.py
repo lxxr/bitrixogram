@@ -20,7 +20,7 @@ def barleybreak_router(bx):
         return state    
 
     @router.message(F.text().lower("пятнашки"))
-    async def handle_fifteen_game(message:Message, fsm: FSMContext):        
+    async def handle_barleybreak_game(message:Message, fsm: FSMContext):        
         chat_id = message.get_chat_id()        
                        
         game_state = await fsm.get_data()
@@ -33,7 +33,7 @@ def barleybreak_router(bx):
             await fsm.update_data(game_state=game_state)
             
         
-        keyboard = get_fifteens_kb(game_state)
+        keyboard = get_barleybreak_kb(game_state)
         
         result = await bx.send_message(chat_id = chat_id, text="Игра в пятнашки", keyboard=keyboard)
         await fsm.update_data(game_message=result['result'])
@@ -55,7 +55,7 @@ def barleybreak_router(bx):
             game_state[zero_index], game_state[num_index] = game_state[num_index], game_state[zero_index]
             await fsm.update_data(game_state=game_state)
         
-        keyboard = get_fifteens_kb(game_state)
+        keyboard = get_barleybreak_kb(game_state)
         
         result = await bx.command_update_message(command=command, text="Игра в пятнашки", keyboard=keyboard)
         await fsm.update_data(game_message=result['result'])
