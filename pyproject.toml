@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling", "asyncio", "aiohttp", "logging"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=61.0", "asyncio", "aiohttp", "logging"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "bitrixogram"
-version = "1.0.4"
+version = "1.0.5"
 authors = [
   { name="Aleksey Rublev", email="lexx@rcbd.org" },
 ]
