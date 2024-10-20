@@ -53,7 +53,7 @@ class ReplyKeyboardBuilder:
         self.buttons = []
         self.current_line = []
 
-    def button(self, text: str, command: str = None, command_params: Any = None, block: str = "Y", link: str = None, width: int = 200, bg_color: str = "#29619b", text_color: str = "#fff", display: str = "LINE", disabled: str = "N") -> 'ReplyKeyboardBuilder':
+    def button(self, text: str, command: str = None, command_params: Any = None, block: str = "Y", link: str = None, width: int = 200, bg_color: str = "#29619b",bg_color_token: str = "base", text_color: str = "#fff", display: str = "LINE", disabled: str = "N") -> 'ReplyKeyboardBuilder':
         """
         Добавляет кнопку в текущую строку клавиатуры.
 
@@ -65,6 +65,7 @@ class ReplyKeyboardBuilder:
         - link: str - ссылка для кнопки (опционально).
         - width: int - ширина кнопки (по умолчанию 200).
         - bg_color: str - цвет фона кнопки (по умолчанию "#29619b").
+        - bg_color_token: str -  токен для цвета кнопки в чате. Может принимать одно из следующих значений: primary, secondary, alert, base По умолчанию имеет значение base.
         - text_color: str - цвет текста кнопки (по умолчанию "#fff").
         - display: str - тип отображения кнопки (по умолчанию "LINE").
         - disabled: str - флаг отключения кнопки (по умолчанию "N").
@@ -79,6 +80,8 @@ class ReplyKeyboardBuilder:
             button["LINK"] = link
         if bg_color:
             button["BG_COLOR"] = bg_color
+        if bg_color_token:
+            button["BG_COLOR_TOKEN"] = bg_color_token            
         if text_color:
             button["TEXT_COLOR"] = text_color
         if display:

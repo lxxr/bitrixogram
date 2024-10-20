@@ -44,14 +44,19 @@ class BitrixBot:
         self.fsm = FSM()        
         self.session = session  
                 
-    async def register_commands(self,commands):
+    async def register_commands(self,commands, ip_whook_endpoint: str = None):
         """
         Регистрирует команды для бота в Bitrix24.
     
         Args:
             commands (list): Список команд для регистрации.
+            ip_whook_endpoint: Ip адрес и порт для обработки команд http://xx.xx.xx.xx:XXXX/
         """     
         for command in commands:
+            if ip_whook_endpoint:            
+                command_whook = ip_whook_endpoint
+            else:
+                command_whook = command.get('EVENT_COMMAND_ADD')
             await self.rest_command('imbot.command.register', {
                 'BOT_ID': self.base_id,
                 'COMMAND': command['COMMAND'],
@@ -59,8 +64,8 @@ class BitrixBot:
                 'HIDDEN': 'Y',
                 'EXTRANET_SUPPORT': 'N',
                 'CLIENT_ID': self.bot_token,
-                'LANG': [{'LANGUAGE_ID': 'en', 'TITLE': command['TITLE'], 'PARAMS': command['PARAMS']}],
-                'EVENT_COMMAND_ADD': command['EVENT_COMMAND_ADD']
+                'LANG': [{'LANGUAGE_ID': 'en', 'TITLE': command['TITLE'], 'PARAMS': command['PARAMS']}],                
+                'EVENT_COMMAND_ADD': command_whook
             })
       
 

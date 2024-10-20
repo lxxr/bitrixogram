@@ -60,12 +60,12 @@ async def main():
     logger = logging.getLogger(__name__)
     async with ClientSession() as session:
         bx= BitrixBot(config.bitrix_bot_endpoint,config.bitrix_bot_auth,config.bitrix_bot_id, session) 
-        await bx.register_commands(reg_commands.commands)
+        await bx.register_commands(reg_commands.commands, config.ip_whook_endpoint)
         dp = Dispatcher()
                 
-        dp.add_router(messages_handler.message_router(bx)) 	            #1
-        #.....................................................
-        dp.add_router(any_handler.any_router(bx))                           #N
+        dp.add_router(messages_handler.message_router(bx)) 	            #first router
+        #.....................................................              ....
+        dp.add_router(any_handler.any_router(bx))                           #last router 
         
         webhooks = WebhookListener(host=config.server_whook_addr_ip, port=config.server_whook_port, dispatcher=dp)
         await webhooks.start()
@@ -169,9 +169,9 @@ from bitrixogram.keyboard import ReplyKeyboardMarkup, ReplyKeyboardBuilder
 def get_main_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
     kb.button(text="-",command="dec")
-    kb.button(text="+",command ="inc")
-    kb.button(text="=",command = "sum")
-    kb.button(text="5",command = "info")
+    kb.button(text="+",command ="inc", bg_color_token="alarm")
+    kb.button(text="=",command = "sum", bg_color="#336633", bg_color_token="primary")
+    kb.button(text="5",command = "info", bg_color="#336633", bg_color_token="secondary")
     kb.adjust(4)
     return kb.as_markup(resize_keyboard=True)
 ```
@@ -179,14 +179,11 @@ def get_main_kb() -> ReplyKeyboardMarkup:
 ### Commands example
 ```python
 
-import config.settings as config
-
-whook_endpoint = config.ip_whook_endpoint
 commands = [
-              {'COMMAND': 'inc',  'TITLE': '+','PARAMS': 'text', 'EVENT_COMMAND_ADD': whook_endpoint},
-              {'COMMAND': 'dec',  'TITLE': '-','PARAMS': 'text', 'EVENT_COMMAND_ADD': whook_endpoint},
-	      {'COMMAND': 'info', 'TITLE': '?','PARAMS': 'text', 'EVENT_COMMAND_ADD': whook_endpoint},
-              {'COMMAND': 'sum',  'TITLE': '=','PARAMS': 'text', 'EVENT_COMMAND_ADD': whook_endpoint} ]
+              {'COMMAND': 'inc',  'TITLE': '+','PARAMS': 'text' },
+              {'COMMAND': 'dec',  'TITLE': '-','PARAMS': 'text' },
+	      {'COMMAND': 'info', 'TITLE': '?','PARAMS': 'text' },
+              {'COMMAND': 'sum',  'TITLE': '=','PARAMS': 'text' } ]
 
 ```
 
